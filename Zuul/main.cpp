@@ -1,3 +1,11 @@
+/*
+Zuul is a text based adventure game where you traverse Sunset High School in an effort to capture special items. In order to win, you must capture all 5 items and return back to the starting point, the I-20 Lab.
+Commands 'NORTH', 'EAST', 'SOUTH', and 'WEST' move the player to the room that is in the respective direction if there is an exit. Command 'PICK' allows the player to pick up an item in the current room that they name and put it in their inventory. Command 'DROP' allows the player to drop an item in their inventory that they name into the room they are currently in. Command 'QUIT' quits the game.
+Credits to Shivam Trivedi for letting me use his map for this project
+Zayeed Saffat
+1/11/2022
+*/
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -7,6 +15,7 @@
 
 using namespace std;
 
+//function that prints player inventory
 void printInventory(vector<item*> inventory) {
     cout << "Items in your inventory:" << endl;
     for (item* i : inventory) {
@@ -14,6 +23,7 @@ void printInventory(vector<item*> inventory) {
     }
 }
 
+//function that introduces information the player should know before every turn: name of room, exits, items in room, and player inventory
 void introduceRoom(room* currentRoom, vector<item*> inventory) {
     cout << "You are currently in the " << currentRoom->getDescription() << "." << endl;
     currentRoom->printExits();
@@ -21,6 +31,7 @@ void introduceRoom(room* currentRoom, vector<item*> inventory) {
     printInventory(inventory);
 }
 
+//function that says if an inventory has an item with the name that is given and also updates the index of that item within the inventory
 bool inventoryHas(vector<item*> inventory, char itemDescription[100], int &index) {
     for (int i = 0; i > inventory.size(); i++) {
         if (strcmp(inventory[i]->getDescription(), itemDescription) == 0) {
@@ -36,6 +47,7 @@ int main() {
     vector<room*> roomList;
     vector<item*> inventory;
 
+    //initializing each room and putting it into the room list
     char newDescription[100];
     strcpy(newDescription, "Java Class");
     room* newRoom = new room(newDescription);
@@ -83,7 +95,7 @@ int main() {
     newRoom = new room(newDescription);
     roomList.push_back(newRoom); 
     
-
+    //intializing each item and putting it into a room
     strcpy(newDescription, "robot");
     item* newItem = new item(newDescription);
     roomList[2]->addItem(newItem);
@@ -109,6 +121,7 @@ int main() {
     char west[100];
     strcpy(west, "WEST");
 
+    //making every exit for each room
     roomList[0]->addExit(south, roomList[2]);
 
     roomList[1]->addExit(east, roomList[2]);
@@ -154,18 +167,17 @@ int main() {
     
     room* currentRoom = roomList[2];
 
-    cout << "Welcome to Zuul, a text based adventure game where you traverse Sunset High School in an effort to capture special items.
-    In order to win, you must capture all 5 items and return back to the starting point, the I-20 Lab. Good luck!" << endl;
+    cout << "Welcome to Zuul, a text based adventure game where you traverse Sunset High School in an effort to capture special items. In order to win, you must capture all 5 items and return back to the starting point, the I-20 Lab. Good luck!" << endl;
     
     bool stillPlaying = true;
-    while (stillPlaying == true) {
+    while (stillPlaying == true) { //while loop for every turn
         cout << endl;
         introduceRoom(currentRoom, inventory);
         cout << "What would you like to do next? ('NORTH','EAST','SOUTH','WEST','PICK','DROP','QUIT')" << endl;
         char input[100];
         cin >> input;
 
-        if (strcmp(input, "NORTH") == 0 || strcmp(input, "EAST") == 0 || strcmp(input, "SOUTH") == 0 || strcmp(input, "WEST") == 0) {
+        if (strcmp(input, "NORTH") == 0 || strcmp(input, "EAST") == 0 || strcmp(input, "SOUTH") == 0 || strcmp(input, "WEST") == 0) { //if a direction is inputted, checks if there is an exit and then sets current room
             if (currentRoom->hasExit(input) == true) {
                 currentRoom = currentRoom->getExit(input);
             }
@@ -174,12 +186,12 @@ int main() {
             }
         }
         
-        else if (strcmp(input, "PICK") == 0) {
+        else if (strcmp(input, "PICK") == 0) { //pick
             cout << "What is the name of the item you want to pick up?" << endl;
             char itemDescription[100];
             cin >> itemDescription;
 
-            if (currentRoom->hasItem(itemDescription) == true) {
+            if (currentRoom->hasItem(itemDescription) == true) { //if inputted item is in the room, removes it from the room and adds it to player inventory
                 newItem = new item(itemDescription);
                 inventory.push_back(newItem);
                 currentRoom->removeItem(itemDescription);
@@ -189,13 +201,13 @@ int main() {
             }
         }
 
-        else if (strcmp(input, "DROP") == 0) {
+        else if (strcmp(input, "DROP") == 0) { //drop
             cout << "What is the name of the item you want to drop?" << endl;
             char itemDescription[100];
             cin >> itemDescription;
 
             int index;
-            if (inventoryHas(inventory, itemDescription, index) == true) {
+            if (inventoryHas(inventory, itemDescription, index) == true) { //if inputted item is in player inventory, removes it from inventory and adds it to the room
                 inventory.erase(inventory.begin()+index);
                 newItem = new item(itemDescription);
                 currentRoom->addItem(newItem);
@@ -205,7 +217,7 @@ int main() {
             }
         }
 
-        else if (strcmp(input, "QUIT") == 0) {
+        else if (strcmp(input, "QUIT") == 0) { //quits game
             stillPlaying = false;
         }
 
@@ -213,7 +225,7 @@ int main() {
             cout << "Invalid input." << endl;
         }
         
-        if (inventory.size() == 5 && strcmp(currentRoom->getDescription(), "I-20 Lab") == 0) {
+        if (inventory.size() == 5 && strcmp(currentRoom->getDescription(), "I-20 Lab") == 0) { //checks if player has met win conditions and quits game
             cout << "You win! Congratulations." << endl;
             stillPlaying = false;
         }
