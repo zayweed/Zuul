@@ -1,3 +1,4 @@
+//item functions
 #include <iostream>
 #include <cstring>
 
@@ -5,10 +6,10 @@
 
 using namespace std;
 
-item::item(char* newDescription) {
+item::item(char* newDescription) { //constructer
   strcpy(description, newDescription);
 }
 
-char* item::getDescription() {
+char* item::getDescription() { //returns description
     return description;
 }
