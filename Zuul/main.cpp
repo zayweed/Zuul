@@ -154,7 +154,8 @@ int main() {
     
     room* currentRoom = roomList[2];
 
-    //cout << "Welcome to Zuul, a text based adventure game "
+    cout << "Welcome to Zuul, a text based adventure game where you traverse Sunset High School in an effort to capture special items.
+    In order to win, you must capture all 5 items and return back to the starting point, the I-20 Lab. Good luck!" << endl;
     
     bool stillPlaying = true;
     while (stillPlaying == true) {
@@ -183,6 +184,9 @@ int main() {
                 inventory.push_back(newItem);
                 currentRoom->removeItem(itemDescription);
             }
+            else {
+                cout << "This item is not in the room." << endl;   
+            }
         }
 
         else if (strcmp(input, "DROP") == 0) {
@@ -196,6 +200,9 @@ int main() {
                 newItem = new item(itemDescription);
                 currentRoom->addItem(newItem);
             }
+            else {
+                cout << "This item is not in your inventory." << endl;   
+            }
         }
 
         else if (strcmp(input, "QUIT") == 0) {
@@ -204,6 +211,11 @@ int main() {
 
         else {
             cout << "Invalid input." << endl;
+        }
+        
+        if (inventory.size() == 5 && strcmp(currentRoom->getDescription(), "I-20 Lab") == 0) {
+            cout << "You win! Congratulations." << endl;
+            stillPlaying = false;
         }
     }
 
