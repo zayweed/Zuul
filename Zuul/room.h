@@ -1,3 +1,4 @@
+//declarations for 'room.cpp'
 #ifndef ROOM_H
 #define ROOM_H
 
@@ -10,12 +11,12 @@
 
 using namespace std;
 
-class room {
+class room { //local variables
     char description[100];
     vector<item*> items;
     map<char*, room*> exits;
 
-public:
+public: //constructer and functions
     room(char* newDescription);
     void addItem(item* newItem);
     void addExit(char* direction, room* newRoom);
