@@ -1,3 +1,4 @@
+//declarations for 'item.cpp'
 #ifndef ITEM_H
 #define ITEM_H
 
@@ -8,10 +9,10 @@
 
 using namespace std;
 
-class item {
+class item { //local variables
     char description[100];
 
-public:
+public: //constructer and functions
     item(char* newDescription);
     char* getDescription();
 };
