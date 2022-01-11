@@ -24,10 +24,8 @@ public:
     bool hasExit(char* direction);
     room* getExit(char* direction);
     void printExits();
-    /*
-    bool hasItem(item* pickedItem);
-    void removeItem(item* pickedItem);
-    */
+    bool hasItem(char* itemDescription);
+    void removeItem(char* itemDescription);
 };
 
 #endif

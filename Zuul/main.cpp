@@ -21,6 +21,17 @@ void introduceRoom(room* currentRoom, vector<item*> inventory) {
     printInventory(inventory);
 }
 
+bool inventoryHas(vector<item*> inventory, char itemDescription[100], int &index) {
+    for (int i = 0; i > inventory.size(); i++) {
+        if (strcmp(inventory[i]->getDescription(), itemDescription) == 0) {
+            return true;
+            index = i;
+        }
+    }
+
+    return false;
+}
+
 int main() {
     vector<room*> roomList;
     vector<item*> inventory;
@@ -142,12 +153,14 @@ int main() {
     roomList[14]->addExit(west, roomList[13]);
     
     room* currentRoom = roomList[2];
+
+    //cout << "Welcome to Zuul, a text based adventure game "
     
     bool stillPlaying = true;
     while (stillPlaying == true) {
         cout << endl;
         introduceRoom(currentRoom, inventory);
-        cout << "What would you like to do next?" << endl;
+        cout << "What would you like to do next? ('NORTH','EAST','SOUTH','WEST','PICK','DROP','QUIT')" << endl;
         char input[100];
         cin >> input;
 
@@ -161,11 +174,28 @@ int main() {
         }
         
         else if (strcmp(input, "PICK") == 0) {
+            cout << "What is the name of the item you want to pick up?" << endl;
+            char itemDescription[100];
+            cin >> itemDescription;
 
+            if (currentRoom->hasItem(itemDescription) == true) {
+                newItem = new item(itemDescription);
+                inventory.push_back(newItem);
+                currentRoom->removeItem(itemDescription);
+            }
         }
 
         else if (strcmp(input, "DROP") == 0) {
-            
+            cout << "What is the name of the item you want to drop?" << endl;
+            char itemDescription[100];
+            cin >> itemDescription;
+
+            int index;
+            if (inventoryHas(inventory, itemDescription, index) == true) {
+                inventory.erase(inventory.begin()+index);
+                newItem = new item(itemDescription);
+                currentRoom->addItem(newItem);
+            }
         }
 
         else if (strcmp(input, "QUIT") == 0) {
@@ -211,6 +241,7 @@ DROP
 QUIT
 
 Methods:
+printInventory
 introduceRoom
 inventoryHas (DROP)
 */

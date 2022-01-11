@@ -55,13 +55,21 @@ void room::printExits() {
     }
 }
 
-/*
-bool room::hasItem(item* pickedItem) {
-
+bool room::hasItem(char* itemDescription) {
+    for (item* i : items) {
+        if (strcmp(i->getDescription(), itemDescription) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
-void room::removeItem(item* pickedItem) {
-    
+void room::removeItem(char* itemDescription) {
+    for (int i = 0; i < items.size(); i++) {
+        if (strcmp(items[i]->getDescription(), itemDescription) == 0) {
+            items.erase(items.begin()+i);
+            break;
+        }
+    }
 }
-*/
 
